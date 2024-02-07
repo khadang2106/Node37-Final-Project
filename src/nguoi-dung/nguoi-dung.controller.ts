@@ -72,9 +72,9 @@ export class NguoiDungController {
 
   // Search User by Name
   @HttpCode(200)
-  @Get('/search/:name')
+  @Get('/search/:TenNguoiDung')
   searchUserByName(
-    @Param('name') name: string
+    @Param('TenNguoiDung') name: string
   ) {
     try {
       return this.nguoiDungService.searchUserByName(name)
