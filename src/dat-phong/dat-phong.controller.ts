@@ -1,34 +1,72 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpException, Headers, Put } from '@nestjs/common';
 import { DatPhongService } from './dat-phong.service';
-import { CreateDatPhongDto } from './dto/create-dat-phong.dto';
-import { UpdateDatPhongDto } from './dto/update-dat-phong.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { dat_phong } from '@prisma/client';
+import { Booking } from './entities/dat-phong.entity';
 
+@ApiTags('DatPhong')
 @Controller('dat-phong')
 export class DatPhongController {
-  constructor(private readonly datPhongService: DatPhongService) {}
+  constructor(private readonly datPhongService: DatPhongService) { }
 
-  @Post()
-  create(@Body() createDatPhongDto: CreateDatPhongDto) {
-    return this.datPhongService.create(createDatPhongDto);
-  }
-
+  // Get Booking List
+  @HttpCode(200)
   @Get()
-  findAll() {
-    return this.datPhongService.findAll();
+  findAll(): Promise<dat_phong[]> {
+    return this.datPhongService.findAll()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.datPhongService.findOne(+id);
+  // Create Booking
+  @HttpCode(200)
+  @Post()
+  createBooking(
+    @Body() body: Booking,
+    @Headers('token') token: string) {
+    try {
+      return this.datPhongService.createBooking(body, token)
+    } catch (exception) {
+      throw new HttpException(exception.response, exception.status)
+    }
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDatPhongDto: UpdateDatPhongDto) {
-    return this.datPhongService.update(+id, updateDatPhongDto);
+  // Get Booking by Id
+  @HttpCode(200)
+  @Get('/:id')
+  getBookingById(
+    @Param('id') id: number) {
+    return this.datPhongService.getBookingById(id * 1)
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.datPhongService.remove(+id);
+  // Update Booking
+  @HttpCode(200)
+  @Put('/:id')
+  updateBooking(
+    @Param('id') id: number,
+    @Headers('token') token: string,
+    @Body() body: Booking) {
+    try {
+      return this.datPhongService.updateBooking(id * 1, token, body)
+    } catch (exception) {
+      throw new HttpException(exception.response, exception.status)
+    }
+  }
+
+  // Delete Booking
+  @HttpCode(200)
+  @Delete('/:id')
+  deleteBooking(@Param('id') id: number, @Headers('token') token: string) {
+    try {
+      return this.datPhongService.deleteBooking(id * 1, token)
+    } catch (exception) {
+      throw new HttpException(exception.response, exception.status)
+    }
+  }
+
+  // Get Booking by User Id
+  @HttpCode(200)
+  @Get('/lay-theo-nguoi-dung/:MaNguoiDung')
+  getBookingByUserId(
+    @Param('MaNguoiDung') id: number) {
+    return this.datPhongService.getBookingByUserId(id * 1)
   }
 }

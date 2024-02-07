@@ -86,7 +86,7 @@ export class PhongService {
 
       return rest
     } else {
-      throw new HttpException("Room cannot found!", HttpStatus.NOT_FOUND)
+      throw new HttpException("Room cannot be found!", HttpStatus.NOT_FOUND)
     }
   }
 

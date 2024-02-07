@@ -41,7 +41,7 @@ export class BinhLuanService {
       })
 
       return {
-        message: "Leave Comment Successfully",
+        message: "Comment Successfully",
         data: newComment
       }
 
