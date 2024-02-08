@@ -40,8 +40,23 @@ export class ViTriService {
     }
   }
 
+  // Get Location Pagination
+  async getLocationPage(pageIndex: number, pageSize: number, keyword: string) {
+    const where = keyword ? { ten_vi_tri: { contains: keyword } } : {};
+
+    const totalCount = await this.prisma.vi_tri.count({ where });
+
+    const result = await this.prisma.vi_tri.findMany({
+      where,
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize
+    })
+
+    return { result, totalCount }
+  }
+
   // Find Location by Id
-  async findLocationById(id: number): Promise<vi_tri> {
+  async getLocationById(id: number): Promise<vi_tri> {
     const location = await this.prisma.vi_tri.findFirst({
       where: {
         id

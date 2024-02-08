@@ -79,10 +79,24 @@ export class NguoiDungService {
         }
       })
 
+      const checkUserBooking = await this.prisma.dat_phong.findMany({
+        where: {
+          ma_nguoi_dat: id
+        }
+      })
+
       if (checkUserComments) {
         await this.prisma.binh_luan.deleteMany({
           where: {
             ma_nguoi_binh_luan: id
+          }
+        })
+      }
+
+      if (checkUserBooking) {
+        await this.prisma.dat_phong.deleteMany({
+          where: {
+            ma_nguoi_dat: id
           }
         })
       }
@@ -99,8 +113,23 @@ export class NguoiDungService {
     }
   }
 
+  // Get User Pagination
+  async getUserPage(pageIndex: number, pageSize: number, keyword: string) {
+    const where = keyword ? { name: { contains: keyword } } : {};
+
+    const totalCount = await this.prisma.nguoi_dung.count({ where });
+
+    const result = await this.prisma.nguoi_dung.findMany({
+      where,
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize
+    })
+
+    return { result, totalCount }
+  }
+
   // Get User By Id
-  async findUserById(id: number): Promise<nguoi_dung> {
+  async getUserById(id: number) {
     const user = await this.prisma.nguoi_dung.findFirst({
       where: {
         id
@@ -123,16 +152,30 @@ export class NguoiDungService {
     })
 
     if (checkUser) {
-      const newData = await this.prisma.nguoi_dung.update({
-        where: {
-          id
-        }, data: { ...body, pass_word: bcrypt.hashSync(body.pass_word, 10) }
-      })
+      if (body.pass_word) {
+        const newData = await this.prisma.nguoi_dung.update({
+          where: {
+            id
+          }, data: { ...body, pass_word: bcrypt.hashSync(body.pass_word, 10) }
+        })
 
-      return {
-        message: "Update User Successfully",
-        data: { ...newData, pass_word: "" }
+        return {
+          message: "Update User Successfully",
+          data: { ...newData, pass_word: "" }
+        }
+      } else {
+        const newData = await this.prisma.nguoi_dung.update({
+          where: {
+            id
+          }, data: body
+        })
+
+        return {
+          message: "Update User Successfully",
+          data: { ...newData, pass_word: "" }
+        }
       }
+
     } else {
       throw new HttpException("User not existed", HttpStatus.NOT_FOUND)
     }

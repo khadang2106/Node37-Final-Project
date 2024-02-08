@@ -1,0 +1,982 @@
+{
+	"info": {
+		"_postman_id": "9f521681-d360-4a33-b61b-f4be65a286e0",
+		"name": "Node37-Final-Project-AirBnb",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28548055"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"admin02@gmail.com\",\r\n  \"pass_word\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Tester\",\r\n  \"email\": \"test02@gmail.com\",\r\n  \"pass_word\": \"123\",\r\n  \"phone\": \"012345678\",\r\n  \"birth_day\": \"01/01/1990\",\r\n  \"gender\": \"Male\",\r\n  \"role\": \"USER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/auth/register",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ViTri",
+			"item": [
+				{
+					"name": "Get Locations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/vi-tri",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"vi-tri"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Location",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjozfSwiaWF0IjoxNzA3MzExNTA2LCJleHAiOjE3MDczOTc5MDZ9.jGtZI2eNQxf7tbabZ_HqChmiLu0_kHrz4AFFkQ2O3so",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"ten_vi_tri\": \"Quận Hoàn Kiếm\",\r\n  \"tinh_thanh\": \"Hà Nội\",\r\n  \"quoc_gia\": \"Việt Nam\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/vi-tri",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"vi-tri"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Location Pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/vi-tri/phan-trang-tim-kiem?pageIndex=2&pageSize=2&keyword=",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"vi-tri",
+								"phan-trang-tim-kiem"
+							],
+							"query": [
+								{
+									"key": "pageIndex",
+									"value": "2"
+								},
+								{
+									"key": "pageSize",
+									"value": "2"
+								},
+								{
+									"key": "keyword",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Location By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/vi-tri/5",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"vi-tri",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Location",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjozfSwiaWF0IjoxNzA3MjgwNzQ0LCJleHAiOjE3MDczNjcxNDR9.x2FOwIkaafUvCUfbkLs8c9LPReczpADdoVvBLzxaN5s",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ten_vi_tri\":\"Quận 9\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/vi-tri/6",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"vi-tri",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Location",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjozfSwiaWF0IjoxNzA3MjgwNzQ0LCJleHAiOjE3MDczNjcxNDR9.x2FOwIkaafUvCUfbkLs8c9LPReczpADdoVvBLzxaN5s",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/vi-tri/2",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"vi-tri",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Location Img",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjozfSwiaWF0IjoxNzA3MzExNTA2LCJleHAiOjE3MDczOTc5MDZ9.jGtZI2eNQxf7tbabZ_HqChmiLu0_kHrz4AFFkQ2O3so",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/saocu/Desktop/hinh-test-airbnb/hoan-kiem-1.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/vi-tri/upload-hinh-vitri?maViTri=7",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"vi-tri",
+								"upload-hinh-vitri"
+							],
+							"query": [
+								{
+									"key": "maViTri",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "NguoiDung",
+			"item": [
+				{
+					"name": "Get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/users",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo0fSwiaWF0IjoxNzA3Mzg4NTUyLCJleHAiOjE3MDc0NzQ5NTJ9.z4zR7aZZ6hvt4wtpDIbqYNh5OzWJZNCs7dUx_Tcd3U8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"NewAdmin\",\r\n  \"email\": \"admin03@gmail.com\",\r\n  \"pass_word\": \"123\",\r\n  \"phone\": \"078784545\",\r\n  \"birth_day\": \"23/05/1994\",\r\n  \"gender\": \"Female\",\r\n  \"role\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/users",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo3fSwiaWF0IjoxNzA3Mzg2OTE5LCJleHAiOjE3MDc0NzMzMTl9.XPbhqKqCKEolu_ofhT-xqF74NKgzkpyi_4jXJQ5kWCc",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/users/7",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/users/phan-trang-tim-kiem?pageIndex=1&pageSize=5&keyword=",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users",
+								"phan-trang-tim-kiem"
+							],
+							"query": [
+								{
+									"key": "pageIndex",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "5"
+								},
+								{
+									"key": "keyword",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/users/8",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"pass_word\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/users/7",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search User by Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/users/search/admin",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users",
+								"search",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Avatar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoyfSwiaWF0IjoxNzA3Mzg3MDIyLCJleHAiOjE3MDc0NzM0MjJ9.0o0z2Cfv2mCKPG6pN04NxGtAju-n99n8_DBsTpNybV4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/saocu/Desktop/hinh-test-airbnb/death.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/users/upload-avatar",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"users",
+								"upload-avatar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Phong",
+			"item": [
+				{
+					"name": "Get Rooms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/phong-thue",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"phong-thue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Room",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjozfSwiaWF0IjoxNzA3MzExNTA2LCJleHAiOjE3MDczOTc5MDZ9.jGtZI2eNQxf7tbabZ_HqChmiLu0_kHrz4AFFkQ2O3so",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ten_phong\": \"Phòng test số 3\",\r\n    \"khach\": 5,\r\n    \"phong_ngu\": 3,\r\n    \"giuong\": 5,\r\n    \"phong_tam\": 2,\r\n    \"mo_ta\": \"mo ta phong 3\",\r\n    \"gia_tien\": 30,\r\n    \"may_giat\": true,\r\n    \"ban_la\": true,\r\n    \"tivi\": true,\r\n    \"dieu_hoa\": true,\r\n    \"wifi\": true,\r\n    \"bep\": true,\r\n    \"do_xe\": false,\r\n    \"ho_boi\": false,\r\n    \"ban_ui\": false,\r\n    \"ma_vi_tri\": 7\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/phong-thue",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"phong-thue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Room by Location",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/phong-thue/lay-phong-theo-vi-tri?maViTri=1",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"phong-thue",
+								"lay-phong-theo-vi-tri"
+							],
+							"query": [
+								{
+									"key": "maViTri",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Room Pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/phong-thue/phan-trang-tim-kiem?pageIndex=1&pageSize=3&keyword=",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"phong-thue",
+								"phan-trang-tim-kiem"
+							],
+							"query": [
+								{
+									"key": "pageIndex",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "3"
+								},
+								{
+									"key": "keyword",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Room by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/phong-thue/8",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"phong-thue",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Room",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjozfSwiaWF0IjoxNzA3MzA2ODk4LCJleHAiOjE3MDczOTMyOTh9.TDv3DtjCL1uPI1gNXS_jP7cBJsPXp9Ym9M4FJS5WujM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ten_phong\": \"Phòng sang trọng với ban công tại D.1 - 200m đến Bitexco\",\r\n    \"khach\": 2,\r\n    \"phong_ngu\": 2,\r\n    \"giuong\": 2,\r\n    \"phong_tam\": 2,\r\n    \"mo_ta\": \"Emmy là Chủ nhà siêu cấp\\r\\nChủ nhà siêu cấp là những chủ nhà có kinh nghiệm, được đánh giá cao và là những người cam kết mang lại quãng thời gian ở tuyệt vời cho khách.\\r\\nTrải nghiệm nhận phòng tuyệt vời\\r\\n.\",\r\n    \"gia_tien\": 17,\r\n    \"may_giat\": true,\r\n    \"ban_la\": true,\r\n    \"tivi\": true,\r\n    \"dieu_hoa\": true,\r\n    \"wifi\": true,\r\n    \"bep\": true,\r\n    \"do_xe\": false,\r\n    \"ho_boi\": false,\r\n    \"ban_ui\": false,\r\n    \"ma_vi_tri\": 1\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/phong-thue/3",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"phong-thue",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Room",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjozfSwiaWF0IjoxNzA3MzEwNzcwLCJleHAiOjE3MDczOTcxNzB9.IqaaxNiwBv1sc4YZ1TuX6ytKVyN3c6lL14CZM_mwZbk",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/phong-thue/1",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"phong-thue",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Room Img",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjozfSwiaWF0IjoxNzA3MzExNTA2LCJleHAiOjE3MDczOTc5MDZ9.jGtZI2eNQxf7tbabZ_HqChmiLu0_kHrz4AFFkQ2O3so",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/saocu/Desktop/hinh-test-airbnb/room2.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/phong-thue/upload-hinh-phong?maPhong=3",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"phong-thue",
+								"upload-hinh-phong"
+							],
+							"query": [
+								{
+									"key": "maPhong",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BinhLuan",
+			"item": [
+				{
+					"name": "Get Comments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/binh-luan",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"binh-luan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leave Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjozfSwiaWF0IjoxNzA3MzExNTA2LCJleHAiOjE3MDczOTc5MDZ9.jGtZI2eNQxf7tbabZ_HqChmiLu0_kHrz4AFFkQ2O3so",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"ma_phong\": 4,\r\n  \"noi_dung\": \"Testtttting commentttt\",\r\n  \"sao_binh_luan\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/binh-luan",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"binh-luan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Comment",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjozfSwiaWF0IjoxNzA3MzIzMzgxLCJleHAiOjE3MDc0MDk3ODF9._QxH8QNTqw7BWissYYamoNQIT4ph_Dt1LoTlOVIB7qw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"ma_phong\": 2,\r\n  \"noi_dung\": \"bbbbbbbb\",\r\n  \"sao_binh_luan\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/binh-luan/3",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"binh-luan",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxfSwiaWF0IjoxNzA3MzI0NTM1LCJleHAiOjE3MDc0MTA5MzV9.soXzinU1CDSdrfTEnRrNK6tqM0T9REXw3bNbbrPi_pE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/binh-luan/4",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"binh-luan",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Comment by Room Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/binh-luan/lay-binh-luan-theo-phong/2",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"binh-luan",
+								"lay-binh-luan-theo-phong",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DatPhong",
+			"item": [
+				{
+					"name": "Get Bookings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/dat-phong",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"dat-phong"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoyfSwiaWF0IjoxNzA3MzI1NTU5LCJleHAiOjE3MDc0MTE5NTl9.GJ2CTp6WJ9SfzPJmkkKgds0ELQWQQqswSKBO2VYtKXw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"ma_phong\": 6,\r\n  \"ngay_den\": \"29/02/2024\",\r\n  \"ngay_di\": \"30/03/2024\",\r\n  \"so_luong_khach\": 10,\r\n  \"ma_nguoi_dat\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/dat-phong",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"dat-phong"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/dat-phong/11",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"dat-phong",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Booking",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoyfSwiaWF0IjoxNzA3MzMzNDgzLCJleHAiOjE3MDc0MTk4ODN9.IuNp2hbJr2jAm9HUlZKwZFhn7vEXX3UaCjRTJYTm_do",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"ma_phong\": 3,\r\n  \"ngay_den\": \"15/11/2024\",\r\n  \"ngay_di\": \"20/11/2024\",\r\n  \"so_luong_khach\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/dat-phong/3",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"dat-phong",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Booking",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoyfSwiaWF0IjoxNzA3MzM0MDcxLCJleHAiOjE3MDc0MjA0NzF9.IfDRFEFcoSKu45gwSUa5eY431ItA5CsrRh050QZgLT8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/dat-phong/4",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"dat-phong",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking by User Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/dat-phong/lay-theo-nguoi-dung/1",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"dat-phong",
+								"lay-theo-nguoi-dung",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

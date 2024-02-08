@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Param, Delete, HttpCode, Headers, HttpException, Put, Query, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, HttpCode, Headers, HttpException, Put, Query, UseInterceptors, UploadedFile, HttpStatus } from '@nestjs/common';
 import { ViTriService } from './vi-tri.service';
-import { ApiBody, ApiConsumes, ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiHeader, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { vi_tri } from '@prisma/client';
 import { CreateLocation } from './entities/vi-tri.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -34,11 +34,38 @@ export class ViTriController {
     }
   }
 
+  // Get Location Pagination
+  @ApiQuery({ name: "keyword", required: false })
+  @HttpCode(200)
+  @Get('/phan-trang-tim-kiem')
+  getLocationPage(
+    @Query("pageIndex") pageIndex: string,
+    @Query("pageSize") pageSize: string,
+    @Query("keyword") keyword: string
+  ) {
+    try {
+      const pageIndexNumber = parseInt(pageIndex, 10);
+      const pageSizeNumber = parseInt(pageSize, 10);
+
+      if (isNaN(pageIndexNumber) || isNaN(pageSizeNumber) || pageIndexNumber < 1 || pageSizeNumber < 1) {
+        throw new HttpException(`"pageIndex" and "pageSize" must be greater than 0`, HttpStatus.BAD_REQUEST);
+      }
+
+      return this.viTriService.getLocationPage(pageIndexNumber, pageSizeNumber, keyword)
+    } catch (exception) {
+      throw new HttpException(exception.response, exception.status)
+    }
+  }
+
   // Find Location by Id
   @HttpCode(200)
   @Get('/:id')
-  locationDetail(@Param('id') id: number): Promise<vi_tri> {
-    return this.viTriService.findLocationById(id * 1)
+  getLocationById(@Param('id') id: number): Promise<vi_tri> {
+    try {
+      return this.viTriService.getLocationById(id * 1)
+    } catch (exception) {
+      throw new HttpException(exception.response, exception.status)
+    }
   }
 
   // Update Location

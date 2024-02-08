@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Delete, HttpCode, Headers, HttpException, Query, Param, Put, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete, HttpCode, Headers, HttpException, Query, Param, Put, UseInterceptors, UploadedFile, HttpStatus } from '@nestjs/common';
 import { PhongService } from './phong.service';
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { phong } from '@prisma/client';
 import { Phong } from './entities/phong.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -39,12 +39,39 @@ export class PhongController {
     return this.phongService.getRoomByLocation(maViTri * 1)
   }
 
+  // Get Room Pagination
+  @ApiQuery({ name: "keyword", required: false })
+  @HttpCode(200)
+  @Get('/phan-trang-tim-kiem')
+  getRoomPage(
+    @Query("pageIndex") pageIndex: string,
+    @Query("pageSize") pageSize: string,
+    @Query("keyword") keyword: string
+  ) {
+    try {
+      const pageIndexNumber = parseInt(pageIndex, 10);
+      const pageSizeNumber = parseInt(pageSize, 10);
+
+      if (isNaN(pageIndexNumber) || isNaN(pageSizeNumber) || pageIndexNumber < 1 || pageSizeNumber < 1) {
+        throw new HttpException(`"pageIndex" and "pageSize" must be greater than 0`, HttpStatus.BAD_REQUEST);
+      }
+
+      return this.phongService.getRoomPage(pageIndexNumber, pageSizeNumber, keyword)
+    } catch (exception) {
+      throw new HttpException(exception.response, exception.status)
+    }
+  }
+
   // Get Room by Id
   @HttpCode(200)
   @Get('/:id')
   getRoomById(
     @Param('id') id: number) {
-    return this.phongService.getRoomById(id * 1)
+    try {
+      return this.phongService.getRoomById(id * 1)
+    } catch (exception) {
+      throw new HttpException(exception.response, exception.status)
+    }
   }
 
   // Update Room

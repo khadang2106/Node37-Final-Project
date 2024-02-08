@@ -73,6 +73,21 @@ export class PhongService {
     }
   }
 
+  // Get Room Pagination
+  async getRoomPage(pageIndex: number, pageSize: number, keyword: string) {
+    const where = keyword ? { ten_phong: { contains: keyword } } : {};
+
+    const totalCount = await this.prisma.phong.count({ where });
+
+    const result = await this.prisma.phong.findMany({
+      where,
+      skip: (pageIndex - 1) * pageSize,
+      take: pageSize
+    })
+
+    return { result, totalCount }
+  }
+
   // Get Room by Id
   async getRoomById(id: number) {
     const room = await this.prisma.phong.findFirst({

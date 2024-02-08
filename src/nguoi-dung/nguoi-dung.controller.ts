@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Headers, HttpCode, HttpException, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Headers, HttpCode, HttpException, HttpStatus, Param, Post, Put, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { NguoiDungService } from './nguoi-dung.service';
-import { ApiBody, ApiConsumes, ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiHeader, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { nguoi_dung } from '@prisma/client';
 import { User } from './entities/nguoi-dung.entity';
 import { UploadAvatarDto } from './dto/upload.dto';
@@ -45,12 +45,35 @@ export class NguoiDungController {
     }
   }
 
+  // Get User Pagination
+  @ApiQuery({ name: "keyword", required: false })
+  @HttpCode(200)
+  @Get('/phan-trang-tim-kiem')
+  getUserPage(
+    @Query("pageIndex") pageIndex: string,
+    @Query("pageSize") pageSize: string,
+    @Query("keyword") keyword: string
+  ) {
+    try {
+      const pageIndexNumber = parseInt(pageIndex, 10);
+      const pageSizeNumber = parseInt(pageSize, 10);
+
+      if (isNaN(pageIndexNumber) || isNaN(pageSizeNumber) || pageIndexNumber < 1 || pageSizeNumber < 1) {
+        throw new HttpException(`"pageIndex" and "pageSize" must be greater than 0`, HttpStatus.BAD_REQUEST);
+      }
+
+      return this.nguoiDungService.getUserPage(pageIndexNumber, pageSizeNumber, keyword)
+    } catch (exception) {
+      throw new HttpException(exception.response, exception.status)
+    }
+  }
+
   // Get User By Id
   @HttpCode(200)
   @Get('/:id')
-  findUserById(@Param('id') id: number) {
+  getUserById(@Param('id') id: number) {
     try {
-      return this.nguoiDungService.findUserById(id * 1)
+      return this.nguoiDungService.getUserById(id * 1)
     } catch (exception) {
       throw new HttpException(exception.response, exception.status)
     }
