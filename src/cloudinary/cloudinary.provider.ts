@@ -1,8 +1,3 @@
-// import { Injectable } from '@nestjs/common';
-
-// @Injectable()
-// export class Cloudinary { }
-
 import { v2 as cloudinary } from 'cloudinary';
 
 export const CloudinaryProvider = {
