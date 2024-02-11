@@ -1,9 +1,9 @@
 import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClient, phong } from '@prisma/client';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { AuthenticationService } from 'src/utils/authentication.service';
 import { Phong } from './entities/phong.entity';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class PhongService {

@@ -3,7 +3,7 @@ import { ViTriService } from './vi-tri.service';
 import { ViTriController } from './vi-tri.controller';
 import { JwtService } from '@nestjs/jwt';
 import { AuthenticationService } from 'src/utils/authentication.service';
-import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 
 @Module({
   imports: [CloudinaryModule],

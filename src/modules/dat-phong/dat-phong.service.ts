@@ -1,10 +1,10 @@
 import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthenticationService } from 'src/utils/authentication.service';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { PrismaClient, dat_phong } from '@prisma/client';
 import { Booking } from './entities/dat-phong.entity';
 import * as moment from 'moment';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class DatPhongService {

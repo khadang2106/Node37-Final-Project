@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpException, Headers, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, HttpCode, HttpException, Headers, Put } from '@nestjs/common';
 import { DatPhongService } from './dat-phong.service';
 import { ApiTags } from '@nestjs/swagger';
 import { dat_phong } from '@prisma/client';

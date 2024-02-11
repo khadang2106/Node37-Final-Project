@@ -14,6 +14,7 @@ model binh_luan {
   ngay_binh_luan     DateTime?   @db.Date
   noi_dung           String?     @db.VarChar(255)
   sao_binh_luan      Int?
+  deleted_at         DateTime?   @db.DateTime(0)
   phong              phong?      @relation(fields: [ma_phong], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "binh_luan_ibfk_1")
   nguoi_dung         nguoi_dung? @relation(fields: [ma_nguoi_binh_luan], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "binh_luan_ibfk_2")
 
@@ -28,6 +29,7 @@ model dat_phong {
   ngay_den       DateTime?   @db.Date
   ngay_di        DateTime?   @db.Date
   so_luong_khach Int?
+  deleted_at     DateTime?   @db.DateTime(0)
   phong          phong?      @relation(fields: [ma_phong], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "dat_phong_ibfk_1")
   nguoi_dung     nguoi_dung? @relation(fields: [ma_nguoi_dat], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "dat_phong_ibfk_2")
 
@@ -36,18 +38,19 @@ model dat_phong {
 }
 
 model nguoi_dung {
-  id        Int         @id @default(autoincrement())
-  name      String?     @db.VarChar(255)
-  email     String?     @db.VarChar(255)
-  pass_word String?     @db.VarChar(255)
-  phone     String?     @db.VarChar(255)
-  birth_day String?     @db.VarChar(255)
-  avatar    String?     @db.VarChar(255)
-  gender    String?     @db.VarChar(255)
-  role      String?     @db.VarChar(255)
-  binh_luan binh_luan[]
-  dat_phong dat_phong[]
-  phong     phong[]
+  id         Int         @id @default(autoincrement())
+  name       String?     @db.VarChar(255)
+  email      String?     @db.VarChar(255)
+  pass_word  String?     @db.VarChar(255)
+  phone      String?     @db.VarChar(255)
+  birth_day  String?     @db.VarChar(255)
+  avatar     String?     @db.VarChar(255)
+  gender     String?     @db.VarChar(255)
+  role       String?     @db.VarChar(255)
+  deleted_at DateTime?   @db.DateTime(0)
+  binh_luan  binh_luan[]
+  dat_phong  dat_phong[]
+  phong      phong[]
 }
 
 model phong {
@@ -71,6 +74,7 @@ model phong {
   hinh_anh      String?     @db.VarChar(255)
   ma_vi_tri     Int?
   ma_nguoi_dung Int?
+  deleted_at    DateTime?   @db.DateTime(0)
   binh_luan     binh_luan[]
   dat_phong     dat_phong[]
   vi_tri        vi_tri?     @relation(fields: [ma_vi_tri], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "phong_ibfk_1")
@@ -81,10 +85,11 @@ model phong {
 }
 
 model vi_tri {
-  id         Int     @id @default(autoincrement())
-  ten_vi_tri String? @db.VarChar(255)
-  tinh_thanh String? @db.VarChar(255)
-  quoc_gia   String? @db.VarChar(255)
-  hinh_anh   String? @db.VarChar(255)
+  id         Int       @id @default(autoincrement())
+  ten_vi_tri String?   @db.VarChar(255)
+  tinh_thanh String?   @db.VarChar(255)
+  quoc_gia   String?   @db.VarChar(255)
+  hinh_anh   String?   @db.VarChar(255)
+  deleted_at DateTime? @db.DateTime(0)
   phong      phong[]
 }

@@ -3,7 +3,7 @@ import { PrismaClient, vi_tri } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import { CreateLocation } from './entities/vi-tri.entity';
 import { AuthenticationService } from 'src/utils/authentication.service';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class ViTriService {
@@ -17,7 +17,11 @@ export class ViTriService {
 
   // Get all locations
   async findAll(): Promise<vi_tri[]> {
-    const location = await this.prisma.vi_tri.findMany()
+    const location = await this.prisma.vi_tri.findMany({
+      where: {
+        deleted_at: null
+      }
+    })
     return location
   }
 
@@ -32,6 +36,7 @@ export class ViTriService {
         ten_vi_tri,
         tinh_thanh,
         quoc_gia,
+        deleted_at: null
       }
     })
     return {
@@ -42,7 +47,7 @@ export class ViTriService {
 
   // Get Location Pagination
   async getLocationPage(pageIndex: number, pageSize: number, keyword: string) {
-    const where = keyword ? { ten_vi_tri: { contains: keyword } } : {};
+    const where = keyword ? { ten_vi_tri: { contains: keyword }, deleted_at: null } : { deleted_at: null };
 
     const totalCount = await this.prisma.vi_tri.count({ where });
 
@@ -59,7 +64,8 @@ export class ViTriService {
   async getLocationById(id: number): Promise<vi_tri> {
     const location = await this.prisma.vi_tri.findFirst({
       where: {
-        id
+        id,
+        deleted_at: null
       }
     })
 
@@ -76,7 +82,8 @@ export class ViTriService {
 
     const checkLocation = await this.prisma.vi_tri.findFirst({
       where: {
-        id
+        id,
+        deleted_at: null
       }
     })
     if (checkLocation) {
@@ -105,13 +112,25 @@ export class ViTriService {
       }
     })
     if (checkLocation) {
-      await this.prisma.vi_tri.delete({
+      const checkDeleted = checkLocation.deleted_at;
+
+      if (checkDeleted) {
+        throw new HttpException("Already deleted", HttpStatus.BAD_REQUEST)
+      }
+
+      await this.prisma.vi_tri.update({
         where: {
           id
-        }
+        }, data: { ...checkLocation, deleted_at: new Date() }
       })
 
-      return "Delete Successfully"
+      const getDeletedLocation = await this.prisma.vi_tri.findFirst({
+        where: { id }
+      });
+
+      const getDeletedDate = getDeletedLocation.deleted_at;
+
+      return `Delete Successfully At ${getDeletedDate}`
     } else {
       throw new HttpException("Location not existed", HttpStatus.NOT_FOUND)
     }
@@ -123,7 +142,8 @@ export class ViTriService {
 
     const getLocation = await this.prisma.vi_tri.findFirst({
       where: {
-        id: maViTri
+        id: maViTri,
+        deleted_at: null
       }
     })
 

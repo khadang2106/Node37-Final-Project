@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClient, binh_luan } from '@prisma/client';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { AuthenticationService } from 'src/utils/authentication.service';
 import { BinhLuan } from './entities/binh-luan.entity';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class BinhLuanService {
@@ -17,7 +17,9 @@ export class BinhLuanService {
 
   // Get Comments
   async findAll(): Promise<binh_luan[]> {
-    const comments = await this.prisma.binh_luan.findMany()
+    const comments = await this.prisma.binh_luan.findMany({
+      where: { deleted_at: null }
+    })
     return comments
   }
 
@@ -27,7 +29,8 @@ export class BinhLuanService {
 
     const checkRoom = await this.prisma.phong.findFirst({
       where: {
-        id: body.ma_phong
+        id: body.ma_phong,
+        deleted_at: null
       }
     })
 
@@ -37,6 +40,7 @@ export class BinhLuanService {
           ...body,
           ma_nguoi_binh_luan: decodeToken.data.id,
           ngay_binh_luan: new Date(),
+          deleted_at: null
         }
       })
 
@@ -56,14 +60,16 @@ export class BinhLuanService {
 
     const checkRoom = await this.prisma.phong.findFirst({
       where: {
-        id: body.ma_phong
+        id: body.ma_phong,
+        deleted_at: null
       }
     })
 
     if (checkRoom) {
       const getComment = await this.prisma.binh_luan.findFirst({
         where: {
-          id
+          id,
+          deleted_at: null
         }
       })
       if (getComment) {
@@ -99,14 +105,17 @@ export class BinhLuanService {
 
     const getComment = await this.prisma.binh_luan.findFirst({
       where: {
-        id
+        id,
+        deleted_at: null
       }
     })
     if (getComment) {
       if (getComment.ma_nguoi_binh_luan === decodeToken.data.id) {
-        await this.prisma.binh_luan.delete({
+        await this.prisma.binh_luan.update({
           where: {
             id
+          }, data: {
+            ...getComment, deleted_at: new Date()
           }
         })
 
@@ -123,7 +132,8 @@ export class BinhLuanService {
   async getCommentByRoomId(id: number) {
     const commentList = await this.prisma.binh_luan.findMany({
       where: {
-        ma_phong: id
+        ma_phong: id,
+        deleted_at: null
       },
       include: {
         nguoi_dung: {

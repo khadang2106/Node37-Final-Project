@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, Headers, HttpException, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, HttpCode, Headers, HttpException, Put } from '@nestjs/common';
 import { BinhLuanService } from './binh-luan.service';
 import { ApiTags } from '@nestjs/swagger';
 import { binh_luan } from '@prisma/client';

@@ -1,10 +1,10 @@
 import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaClient, nguoi_dung } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { AuthenticationService } from 'src/utils/authentication.service';
 import { User } from './entities/nguoi-dung.entity';
 import * as bcrypt from "bcrypt"
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class NguoiDungService {
