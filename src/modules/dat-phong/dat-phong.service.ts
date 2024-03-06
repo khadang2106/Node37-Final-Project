@@ -21,9 +21,13 @@ export class DatPhongService {
   }
 
   // Get Booking List
-  async findAll(): Promise<dat_phong[]> {
+  async findAll() {
     const bookingList = await this.prisma.dat_phong.findMany()
-    return bookingList
+
+    return bookingList.map((booking) => {
+      const { deleted_at, ...rest } = booking;
+      return rest
+    })
   }
 
   // Create Booking
@@ -53,9 +57,11 @@ export class DatPhongService {
       }
     })
 
+    const { deleted_at, ...rest } = newBooking;
+
     return {
       message: "Booking Successfully",
-      data: newBooking
+      data: rest
     }
   }
 
@@ -67,8 +73,10 @@ export class DatPhongService {
       }
     })
 
+    const { deleted_at, ...rest } = booking;
+
     if (booking) {
-      return booking
+      return rest
     } else {
       throw new HttpException("Booking cannot found!", HttpStatus.NOT_FOUND)
     }
@@ -111,9 +119,11 @@ export class DatPhongService {
           }
         })
 
+        const { deleted_at, ...rest } = newData;
+
         return {
           message: "Update Booking Successfully",
-          data: newData
+          data: rest
         }
       } else {
         throw new HttpException("This is not your booking. Permission denied!", HttpStatus.UNAUTHORIZED)
@@ -167,7 +177,10 @@ export class DatPhongService {
     })
 
     if (bookingList.length > 0) {
-      return bookingList
+      return bookingList.map((booking) => {
+        const { deleted_at, ...rest } = booking;
+        return rest
+      })
     } else {
       throw new HttpException("Booking not existed!", HttpStatus.NOT_FOUND)
     }

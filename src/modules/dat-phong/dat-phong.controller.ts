@@ -12,7 +12,7 @@ export class DatPhongController {
   // Get Booking List
   @HttpCode(200)
   @Get()
-  findAll(): Promise<dat_phong[]> {
+  findAll() {
     return this.datPhongService.findAll()
   }
 

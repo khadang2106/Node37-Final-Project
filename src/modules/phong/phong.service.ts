@@ -17,32 +17,7 @@ export class PhongService {
 
   // Get all Rooms
   async findAll() {
-    const rooms = await this.prisma.phong.findMany(// {
-      //   select: {
-      //     id: true,
-      //     ten_phong: true,
-      //     khach: true,
-      //     phong_ngu: true,
-      //     giuong: true,
-      //     phong_tam: true,
-      //     mo_ta: true,
-      //     gia_tien: true,
-      //     may_giat: true,
-      //     ban_la: true,
-      //     tivi: true,
-      //     dieu_hoa: true,
-      //     wifi: true,
-      //     bep: true,
-      //     do_xe: true,
-      //     ho_boi: true,
-      //     ban_ui: true,
-      //     hinh_anh: true,
-      //     ma_vi_tri: true,
-      //     ma_nguoi_dung: false,
-      //     deleted_at: false
-      //   }
-      // }
-    )
+    const rooms = await this.prisma.phong.findMany()
 
     const listRoom = rooms.map((room) => {
       const { ma_nguoi_dung, deleted_at, ...rest } = room;
