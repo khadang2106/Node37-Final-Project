@@ -16,9 +16,18 @@ export class BinhLuanService {
   prisma = new PrismaClient();
 
   // Get Comments
-  async findAll(): Promise<binh_luan[]> {
+  async findAll() {
     const comments = await this.prisma.binh_luan.findMany({
-      where: { deleted_at: null }
+      where: { deleted_at: null },
+      select: {
+        id: true,
+        ma_phong: true,
+        ma_nguoi_binh_luan: true,
+        ngay_binh_luan: true,
+        noi_dung: true,
+        sao_binh_luan: true,
+        deleted_at: false
+      }
     })
     return comments
   }
@@ -41,6 +50,15 @@ export class BinhLuanService {
           ma_nguoi_binh_luan: decodeToken.data.id,
           ngay_binh_luan: new Date(),
           deleted_at: null
+        },
+        select: {
+          id: true,
+          ma_phong: true,
+          ma_nguoi_binh_luan: true,
+          ngay_binh_luan: true,
+          noi_dung: true,
+          sao_binh_luan: true,
+          deleted_at: false
         }
       })
 
@@ -81,6 +99,15 @@ export class BinhLuanService {
               ...body,
               ma_nguoi_binh_luan: decodeToken.data.id,
               ngay_binh_luan: new Date(),
+            },
+            select: {
+              id: true,
+              ma_phong: true,
+              ma_nguoi_binh_luan: true,
+              ngay_binh_luan: true,
+              noi_dung: true,
+              sao_binh_luan: true,
+              deleted_at: false
             }
           })
 
@@ -135,7 +162,15 @@ export class BinhLuanService {
         ma_phong: id,
         deleted_at: null
       },
-      include: {
+
+      select: {
+        id: true,
+        ma_phong: true,
+        ma_nguoi_binh_luan: true,
+        ngay_binh_luan: true,
+        noi_dung: true,
+        sao_binh_luan: true,
+        deleted_at: false,
         nguoi_dung: {
           select: {
             id: true,

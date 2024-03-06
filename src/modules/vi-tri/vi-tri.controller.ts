@@ -14,7 +14,7 @@ export class ViTriController {
   // Get all locations
   @HttpCode(200)
   @Get()
-  findAll(): Promise<vi_tri[]> {
+  findAll() {
     return this.viTriService.findAll()
   }
 
@@ -60,7 +60,7 @@ export class ViTriController {
   // Find Location by Id
   @HttpCode(200)
   @Get('/:id')
-  getLocationById(@Param('id') id: number): Promise<vi_tri> {
+  getLocationById(@Param('id') id: number) {
     try {
       return this.viTriService.getLocationById(id * 1)
     } catch (exception) {

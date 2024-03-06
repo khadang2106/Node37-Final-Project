@@ -12,7 +12,7 @@ export class BinhLuanController {
   // Get Comments
   @HttpCode(200)
   @Get()
-  findAll(): Promise<binh_luan[]> {
+  findAll() {
     return this.binhLuanService.findAll()
   }
 

@@ -16,9 +16,41 @@ export class PhongService {
   prisma = new PrismaClient();
 
   // Get all Rooms
-  async findAll(): Promise<phong[]> {
-    const rooms = await this.prisma.phong.findMany()
-    return rooms
+  async findAll() {
+    const rooms = await this.prisma.phong.findMany(// {
+      //   select: {
+      //     id: true,
+      //     ten_phong: true,
+      //     khach: true,
+      //     phong_ngu: true,
+      //     giuong: true,
+      //     phong_tam: true,
+      //     mo_ta: true,
+      //     gia_tien: true,
+      //     may_giat: true,
+      //     ban_la: true,
+      //     tivi: true,
+      //     dieu_hoa: true,
+      //     wifi: true,
+      //     bep: true,
+      //     do_xe: true,
+      //     ho_boi: true,
+      //     ban_ui: true,
+      //     hinh_anh: true,
+      //     ma_vi_tri: true,
+      //     ma_nguoi_dung: false,
+      //     deleted_at: false
+      //   }
+      // }
+    )
+
+    const listRoom = rooms.map((room) => {
+      const { ma_nguoi_dung, deleted_at, ...rest } = room;
+
+      return rest
+    })
+
+    return listRoom
   }
 
   // Create Room
@@ -36,7 +68,7 @@ export class PhongService {
         data: body
       })
 
-      const { ma_nguoi_dung, ...rest } = newRoom
+      const { ma_nguoi_dung, deleted_at, ...rest } = newRoom
 
       return {
         message: "Create Room Successfully",
@@ -63,7 +95,11 @@ export class PhongService {
       })
 
       if (roomList.length > 0) {
-        return roomList
+        return roomList.map((room) => {
+          const { ma_nguoi_dung, deleted_at, ...rest } = room;
+
+          return rest
+        })
       } else {
         throw new HttpException("There are no rooms at this location", HttpStatus.NOT_FOUND)
       }
@@ -85,7 +121,13 @@ export class PhongService {
       take: pageSize
     })
 
-    return { result, totalCount }
+    const listRoom = result.map((room) => {
+      const { ma_nguoi_dung, deleted_at, ...rest } = room;
+
+      return rest
+    })
+
+    return { listRoom, totalCount }
   }
 
   // Get Room by Id
@@ -97,7 +139,7 @@ export class PhongService {
     })
 
     if (room) {
-      const { ma_nguoi_dung, ...rest } = room
+      const { ma_nguoi_dung, deleted_at, ...rest } = room
 
       return rest
     } else {
@@ -121,7 +163,7 @@ export class PhongService {
         }, data: body
       })
 
-      const { ma_nguoi_dung, ...rest } = newData
+      const { ma_nguoi_dung, deleted_at, ...rest } = newData
 
       return {
         message: "Update Room Successfully",
@@ -177,7 +219,7 @@ export class PhongService {
         }
       })
 
-      const { ma_nguoi_dung, ...rest } = newData
+      const { ma_nguoi_dung, deleted_at, ...rest } = newData
 
       return {
         message: "Update Room Image Successfully",

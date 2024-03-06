@@ -14,7 +14,7 @@ export class PhongController {
   // Get all Rooms
   @HttpCode(200)
   @Get()
-  findAllRoom(): Promise<phong[]> {
+  findAllRoom() {
     return this.phongService.findAll()
   }
 

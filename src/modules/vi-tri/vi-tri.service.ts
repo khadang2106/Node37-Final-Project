@@ -16,13 +16,20 @@ export class ViTriService {
   prisma = new PrismaClient();
 
   // Get all locations
-  async findAll(): Promise<vi_tri[]> {
-    const location = await this.prisma.vi_tri.findMany({
+  async findAll() {
+    const locations = await this.prisma.vi_tri.findMany({
       where: {
         deleted_at: null
+      }, select: {
+        id: true,
+        ten_vi_tri: true,
+        tinh_thanh: true,
+        quoc_gia: true,
+        hinh_anh: true,
+        deleted_at: false
       }
     })
-    return location
+    return locations
   }
 
   // Create location
@@ -54,18 +61,34 @@ export class ViTriService {
     const result = await this.prisma.vi_tri.findMany({
       where,
       skip: (pageIndex - 1) * pageSize,
-      take: pageSize
+      take: pageSize,
+      select: {
+        id: true,
+        ten_vi_tri: true,
+        tinh_thanh: true,
+        quoc_gia: true,
+        hinh_anh: true,
+        deleted_at: false
+      }
     })
 
     return { result, totalCount }
   }
 
   // Find Location by Id
-  async getLocationById(id: number): Promise<vi_tri> {
+  async getLocationById(id: number) {
     const location = await this.prisma.vi_tri.findFirst({
       where: {
         id,
         deleted_at: null
+      },
+      select: {
+        id: true,
+        ten_vi_tri: true,
+        tinh_thanh: true,
+        quoc_gia: true,
+        hinh_anh: true,
+        deleted_at: false
       }
     })
 
@@ -90,7 +113,15 @@ export class ViTriService {
       const newData = await this.prisma.vi_tri.update({
         where: {
           id
-        }, data: body
+        }, data: body,
+        select: {
+          id: true,
+          ten_vi_tri: true,
+          tinh_thanh: true,
+          quoc_gia: true,
+          hinh_anh: true,
+          deleted_at: false
+        }
       })
 
       return {
@@ -157,6 +188,14 @@ export class ViTriService {
           id: maViTri
         }, data: {
           hinh_anh: locationImgUrl.url
+        },
+        select: {
+          id: true,
+          ten_vi_tri: true,
+          tinh_thanh: true,
+          quoc_gia: true,
+          hinh_anh: true,
+          deleted_at: false
         }
       })
 
