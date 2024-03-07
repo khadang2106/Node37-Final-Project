@@ -20,16 +20,14 @@ export class ViTriService {
     const locations = await this.prisma.vi_tri.findMany({
       where: {
         deleted_at: null
-      }, select: {
-        id: true,
-        ten_vi_tri: true,
-        tinh_thanh: true,
-        quoc_gia: true,
-        hinh_anh: true,
-        deleted_at: false
       }
     })
-    return locations
+
+    return locations.map((location) => {
+      const { deleted_at, ...rest } = location;
+
+      return rest
+    })
   }
 
   // Create location

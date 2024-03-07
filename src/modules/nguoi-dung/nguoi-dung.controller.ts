@@ -14,7 +14,7 @@ export class NguoiDungController {
   // Get all users
   @HttpCode(200)
   @Get()
-  findAll(): Promise<nguoi_dung[]> {
+  findAll() {
     return this.nguoiDungService.findAll();
   }
 

@@ -99,17 +99,10 @@ export class BinhLuanService {
               ...body,
               ma_nguoi_binh_luan: decodeToken.data.id,
               ngay_binh_luan: new Date(),
-            },
-            select: {
-              id: true,
-              ma_phong: true,
-              ma_nguoi_binh_luan: true,
-              ngay_binh_luan: true,
-              noi_dung: true,
-              sao_binh_luan: true,
-              deleted_at: false
             }
           })
+
+          const { deleted_at, ...rest } = newData
 
           return {
             message: "Update Comment Successfully",

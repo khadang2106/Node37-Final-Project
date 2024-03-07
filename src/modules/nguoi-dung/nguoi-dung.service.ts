@@ -17,12 +17,18 @@ export class NguoiDungService {
   prisma = new PrismaClient();
 
   // Get all users
-  async findAll(): Promise<nguoi_dung[]> {
-    const users = await this.prisma.nguoi_dung.findMany();
+  async findAll() {
+    const users = await this.prisma.nguoi_dung.findMany({
+      where: {
+        deleted_at: null
+      }
+    });
 
-    const modifiedUsers = users.map(users => ({
-      ...users, pass_word: ""
-    }))
+    const modifiedUsers = users.map(user => {
+      const { pass_word, deleted_at, ...rest } = user;
+
+      return rest
+    })
 
     return modifiedUsers
   }
@@ -51,13 +57,17 @@ export class NguoiDungService {
         phone,
         birth_day,
         gender,
-        role
+        role,
+        deleted_at: null
       }
     })
+
+    const { deleted_at, ...rest } = newUser;
+
     return {
       message: "Create New User Successfully",
       data: {
-        ...newUser,
+        ...rest,
         pass_word: ''
       }
     }
@@ -69,41 +79,35 @@ export class NguoiDungService {
 
     const checkUser = await this.prisma.nguoi_dung.findFirst({
       where: {
-        id
+        id,
+        deleted_at: null
       }
     })
     if (checkUser) {
-      const checkUserComments = await this.prisma.binh_luan.findMany({
+      await this.prisma.binh_luan.updateMany({
         where: {
           ma_nguoi_binh_luan: id
+        },
+        data: {
+          deleted_at: new Date()
         }
       })
 
-      const checkUserBooking = await this.prisma.dat_phong.findMany({
+      await this.prisma.dat_phong.updateMany({
         where: {
           ma_nguoi_dat: id
+        },
+        data: {
+          deleted_at: new Date()
         }
       })
 
-      if (checkUserComments) {
-        await this.prisma.binh_luan.deleteMany({
-          where: {
-            ma_nguoi_binh_luan: id
-          }
-        })
-      }
-
-      if (checkUserBooking) {
-        await this.prisma.dat_phong.deleteMany({
-          where: {
-            ma_nguoi_dat: id
-          }
-        })
-      }
-
-      await this.prisma.nguoi_dung.delete({
+      await this.prisma.nguoi_dung.update({
         where: {
           id
+        },
+        data: {
+          deleted_at: new Date()
         }
       })
 
@@ -115,7 +119,7 @@ export class NguoiDungService {
 
   // Get User Pagination
   async getUserPage(pageIndex: number, pageSize: number, keyword: string) {
-    const where = keyword ? { name: { contains: keyword } } : {};
+    const where = keyword ? { name: { contains: keyword }, deleted_at: null } : { deleted_at: null };
 
     const totalCount = await this.prisma.nguoi_dung.count({ where });
 
@@ -125,19 +129,28 @@ export class NguoiDungService {
       take: pageSize
     })
 
-    return { result, totalCount }
+    const mappedResult = result.map((e) => {
+      const { pass_word, deleted_at, ...rest } = e;
+
+      return rest
+    })
+
+    return { mappedResult, totalCount }
   }
 
   // Get User By Id
   async getUserById(id: number) {
     const user = await this.prisma.nguoi_dung.findFirst({
       where: {
-        id
+        id,
+        deleted_at: null
       }
     })
 
     if (user) {
-      return { ...user, pass_word: "" }
+      const { pass_word, deleted_at, ...rest } = user;
+
+      return rest
     } else {
       throw new HttpException("User not existed", HttpStatus.NOT_FOUND)
     }
@@ -147,7 +160,8 @@ export class NguoiDungService {
   async updateUser(id: number, body: User) {
     const checkUser = await this.prisma.nguoi_dung.findFirst({
       where: {
-        id
+        id,
+        deleted_at: null
       }
     })
 
@@ -159,9 +173,11 @@ export class NguoiDungService {
           }, data: { ...body, pass_word: bcrypt.hashSync(body.pass_word, 10) }
         })
 
+        const { pass_word, deleted_at, ...rest } = newData
+
         return {
           message: "Update User Successfully",
-          data: { ...newData, pass_word: "" }
+          data: rest
         }
       } else {
         const newData = await this.prisma.nguoi_dung.update({
@@ -170,9 +186,11 @@ export class NguoiDungService {
           }, data: body
         })
 
+        const { pass_word, deleted_at, ...rest } = newData
+
         return {
           message: "Update User Successfully",
-          data: { ...newData, pass_word: "" }
+          data: rest
         }
       }
 
@@ -187,12 +205,17 @@ export class NguoiDungService {
       where: {
         name: {
           contains: name
-        }
+        },
+        deleted_at: null
       }
     })
 
     if (users.length > 0) {
-      return users.map(user => ({ ...user, pass_word: "" }))
+      return users.map(user => {
+        const { pass_word, deleted_at, ...rest } = user;
+
+        return rest
+      })
     } else {
       throw new HttpException("User not existed", HttpStatus.NOT_FOUND)
     }
@@ -204,7 +227,8 @@ export class NguoiDungService {
 
     const getUser = await this.prisma.nguoi_dung.findFirst({
       where: {
-        id: decodeToken.data.id
+        id: decodeToken.data.id,
+        deleted_at: null
       }
     });
 
@@ -221,9 +245,11 @@ export class NguoiDungService {
         }
       })
 
+      const { pass_word, deleted_at, ...rest } = newData
+
       return {
         message: "Update Avatar Successfully",
-        data: { ...newData, pass_word: "" }
+        data: rest
       }
     } else {
       throw new HttpException("User not existed", HttpStatus.NOT_FOUND)

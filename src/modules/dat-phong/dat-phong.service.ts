@@ -22,7 +22,11 @@ export class DatPhongService {
 
   // Get Booking List
   async findAll() {
-    const bookingList = await this.prisma.dat_phong.findMany()
+    const bookingList = await this.prisma.dat_phong.findMany({
+      where: {
+        deleted_at: null
+      }
+    })
 
     return bookingList.map((booking) => {
       const { deleted_at, ...rest } = booking;
@@ -36,7 +40,8 @@ export class DatPhongService {
 
     const checkRoom = await this.prisma.phong.findFirst({
       where: {
-        id: body.ma_phong
+        id: body.ma_phong,
+        deleted_at: null
       }
     })
 
@@ -69,13 +74,13 @@ export class DatPhongService {
   async getBookingById(id: number) {
     const booking = await this.prisma.dat_phong.findFirst({
       where: {
-        id
+        id,
+        deleted_at: null
       }
     })
 
-    const { deleted_at, ...rest } = booking;
-
     if (booking) {
+      const { deleted_at, ...rest } = booking;
       return rest
     } else {
       throw new HttpException("Booking cannot found!", HttpStatus.NOT_FOUND)
@@ -88,7 +93,8 @@ export class DatPhongService {
 
     const checkRoom = await this.prisma.phong.findFirst({
       where: {
-        id: body.ma_phong
+        id: body.ma_phong,
+        deleted_at: null
       }
     })
 
@@ -102,7 +108,8 @@ export class DatPhongService {
 
     const getBooking = await this.prisma.dat_phong.findFirst({
       where: {
-        id
+        id,
+        deleted_at: null
       }
     })
     if (getBooking) {
@@ -144,9 +151,12 @@ export class DatPhongService {
     })
     if (getBooking) {
       if (getBooking.ma_nguoi_dat === decodeToken.data.id) {
-        await this.prisma.dat_phong.delete({
+        await this.prisma.dat_phong.update({
           where: {
             id
+          },
+          data: {
+            deleted_at: new Date()
           }
         })
 
@@ -163,7 +173,8 @@ export class DatPhongService {
   async getBookingByUserId(id: number) {
     const bookingList = await this.prisma.dat_phong.findMany({
       where: {
-        ma_nguoi_dat: id
+        ma_nguoi_dat: id,
+        deleted_at: null
       },
       include: {
         nguoi_dung: {

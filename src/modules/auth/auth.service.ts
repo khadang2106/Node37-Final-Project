@@ -14,7 +14,10 @@ export class AuthService {
 
   async login(body: Login) {
     const checkUser = await this.prisma.nguoi_dung.findFirst({
-      where: { email: body.email },
+      where: {
+        email: body.email,
+        deleted_at: null
+      },
     });
 
     if (checkUser) {
@@ -48,7 +51,7 @@ export class AuthService {
 
   async register(body: Register): Promise<nguoi_dung> {
     const checkUser = await this.prisma.nguoi_dung.findFirst({
-      where: { email: body.email },
+      where: { email: body.email, deleted_at: null },
     });
 
     if (checkUser) {
