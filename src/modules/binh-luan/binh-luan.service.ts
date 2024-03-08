@@ -18,18 +18,14 @@ export class BinhLuanService {
   // Get Comments
   async findAll() {
     const comments = await this.prisma.binh_luan.findMany({
-      where: { deleted_at: null },
-      select: {
-        id: true,
-        ma_phong: true,
-        ma_nguoi_binh_luan: true,
-        ngay_binh_luan: true,
-        noi_dung: true,
-        sao_binh_luan: true,
-        deleted_at: false
-      }
+      where: { deleted_at: null }
     })
-    return comments
+
+    return comments.map((comment) => {
+      const { deleted_at, ...rest } = comment;
+
+      return rest
+    })
   }
 
   // Create Comment
@@ -50,21 +46,14 @@ export class BinhLuanService {
           ma_nguoi_binh_luan: decodeToken.data.id,
           ngay_binh_luan: new Date(),
           deleted_at: null
-        },
-        select: {
-          id: true,
-          ma_phong: true,
-          ma_nguoi_binh_luan: true,
-          ngay_binh_luan: true,
-          noi_dung: true,
-          sao_binh_luan: true,
-          deleted_at: false
         }
       })
 
+      const { deleted_at, ...rest } = newComment
+
       return {
         message: "Comment Successfully",
-        data: newComment
+        data: rest
       }
 
     } else {
@@ -106,7 +95,7 @@ export class BinhLuanService {
 
           return {
             message: "Update Comment Successfully",
-            data: newData
+            data: rest
           }
         } else {
           throw new HttpException("This is not your comment. Permission denied!", HttpStatus.UNAUTHORIZED)
@@ -155,15 +144,7 @@ export class BinhLuanService {
         ma_phong: id,
         deleted_at: null
       },
-
-      select: {
-        id: true,
-        ma_phong: true,
-        ma_nguoi_binh_luan: true,
-        ngay_binh_luan: true,
-        noi_dung: true,
-        sao_binh_luan: true,
-        deleted_at: false,
+      include: {
         nguoi_dung: {
           select: {
             id: true,
@@ -175,7 +156,11 @@ export class BinhLuanService {
     })
 
     if (commentList.length > 0) {
-      return commentList
+      return commentList.map((comment) => {
+        const { deleted_at, ...rest } = comment;
+
+        return rest
+      })
     } else {
       throw new HttpException("Room not existed!", HttpStatus.NOT_FOUND)
     }

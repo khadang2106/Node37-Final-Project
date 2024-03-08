@@ -17,7 +17,11 @@ export class PhongService {
 
   // Get all Rooms
   async findAll() {
-    const rooms = await this.prisma.phong.findMany()
+    const rooms = await this.prisma.phong.findMany({
+      where: {
+        deleted_at: null
+      }
+    })
 
     const listRoom = rooms.map((room) => {
       const { ma_nguoi_dung, deleted_at, ...rest } = room;
@@ -34,7 +38,8 @@ export class PhongService {
 
     const checkLocation = await this.prisma.vi_tri.findFirst({
       where: {
-        id: body.ma_vi_tri
+        id: body.ma_vi_tri,
+        deleted_at: null
       }
     })
 
@@ -58,14 +63,16 @@ export class PhongService {
   async getRoomByLocation(maViTri: number) {
     const getLocation = await this.prisma.vi_tri.findFirst({
       where: {
-        id: maViTri
+        id: maViTri,
+        deleted_at: null
       }
     })
 
     if (getLocation) {
       const roomList = await this.prisma.phong.findMany({
         where: {
-          ma_vi_tri: maViTri
+          ma_vi_tri: maViTri,
+          deleted_at: null
         }
       })
 
@@ -86,7 +93,7 @@ export class PhongService {
 
   // Get Room Pagination
   async getRoomPage(pageIndex: number, pageSize: number, keyword: string) {
-    const where = keyword ? { ten_phong: { contains: keyword } } : {};
+    const where = keyword ? { ten_phong: { contains: keyword }, deleted_at: null } : { deleted_at: null };
 
     const totalCount = await this.prisma.phong.count({ where });
 
@@ -109,7 +116,8 @@ export class PhongService {
   async getRoomById(id: number) {
     const room = await this.prisma.phong.findFirst({
       where: {
-        id
+        id,
+        deleted_at: null
       }
     })
 
@@ -128,13 +136,15 @@ export class PhongService {
 
     const checkRoom = await this.prisma.phong.findFirst({
       where: {
-        id
+        id,
+        deleted_at: null
       }
     })
     if (checkRoom) {
       const newData = await this.prisma.phong.update({
         where: {
-          id
+          id,
+          deleted_at: null
         }, data: body
       })
 
@@ -155,13 +165,18 @@ export class PhongService {
 
     const checkRoom = await this.prisma.phong.findFirst({
       where: {
-        id
+        id,
+        deleted_at: null
       }
     })
+
     if (checkRoom) {
-      await this.prisma.phong.delete({
+      await this.prisma.phong.update({
         where: {
           id
+        },
+        data: {
+          deleted_at: new Date()
         }
       })
 
@@ -177,7 +192,8 @@ export class PhongService {
 
     const getRoom = await this.prisma.phong.findFirst({
       where: {
-        id: maPhong
+        id: maPhong,
+        deleted_at: null
       }
     })
 

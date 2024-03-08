@@ -146,7 +146,8 @@ export class DatPhongService {
 
     const getBooking = await this.prisma.dat_phong.findFirst({
       where: {
-        id
+        id,
+        deleted_at: null
       }
     })
     if (getBooking) {

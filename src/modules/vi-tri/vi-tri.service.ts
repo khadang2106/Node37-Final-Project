@@ -59,18 +59,13 @@ export class ViTriService {
     const result = await this.prisma.vi_tri.findMany({
       where,
       skip: (pageIndex - 1) * pageSize,
-      take: pageSize,
-      select: {
-        id: true,
-        ten_vi_tri: true,
-        tinh_thanh: true,
-        quoc_gia: true,
-        hinh_anh: true,
-        deleted_at: false
-      }
+      take: pageSize
     })
 
-    return { result, totalCount }
+    const locationList = result.map(({ deleted_at, ...rest }) => rest
+    )
+
+    return { locationList, totalCount }
   }
 
   // Find Location by Id
@@ -79,19 +74,13 @@ export class ViTriService {
       where: {
         id,
         deleted_at: null
-      },
-      select: {
-        id: true,
-        ten_vi_tri: true,
-        tinh_thanh: true,
-        quoc_gia: true,
-        hinh_anh: true,
-        deleted_at: false
       }
     })
 
     if (location) {
-      return location
+      const { deleted_at, ...rest } = location
+
+      return rest
     } else {
       throw new HttpException("Location not existed", HttpStatus.NOT_FOUND)
     }
@@ -111,20 +100,14 @@ export class ViTriService {
       const newData = await this.prisma.vi_tri.update({
         where: {
           id
-        }, data: body,
-        select: {
-          id: true,
-          ten_vi_tri: true,
-          tinh_thanh: true,
-          quoc_gia: true,
-          hinh_anh: true,
-          deleted_at: false
-        }
+        }, data: body
       })
+
+      const { deleted_at, ...rest } = newData
 
       return {
         message: "Update Location Successfully",
-        data: newData
+        data: rest
       }
     } else {
       throw new HttpException("Location not existed", HttpStatus.NOT_FOUND)
@@ -137,7 +120,8 @@ export class ViTriService {
 
     const checkLocation = await this.prisma.vi_tri.findFirst({
       where: {
-        id
+        id,
+        deleted_at: null
       }
     })
     if (checkLocation) {
@@ -150,7 +134,7 @@ export class ViTriService {
       await this.prisma.vi_tri.update({
         where: {
           id
-        }, data: { ...checkLocation, deleted_at: new Date() }
+        }, data: { deleted_at: new Date() }
       })
 
       const getDeletedLocation = await this.prisma.vi_tri.findFirst({
@@ -186,20 +170,14 @@ export class ViTriService {
           id: maViTri
         }, data: {
           hinh_anh: locationImgUrl.url
-        },
-        select: {
-          id: true,
-          ten_vi_tri: true,
-          tinh_thanh: true,
-          quoc_gia: true,
-          hinh_anh: true,
-          deleted_at: false
         }
       })
 
+      const { deleted_at, ...rest } = newData
+
       return {
         message: "Update Location Image Successfully",
-        data: newData
+        data: rest
       }
     } else {
       throw new HttpException("Location not existed", HttpStatus.NOT_FOUND)
